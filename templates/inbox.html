@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inbox</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #cce7ff;
+            margin: 0;
+            padding: 20px;
+        }
+        .message-card {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .quote {
+            font-weight: bold;
+        }
+        .author {
+            color: #555;
+        }
+        .sender, .extra {
+            margin-top: 5px;
+        }
+        button {
+            background-color: #3399ff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #007acc;
+        }
+    </style>
+</head>
+<body>
+    <h2>Inbox</h2>
+    {% for msg in messages %}
+        <div class="message-card">
+            <div class="quote">"{{ msg['quote'] }}"</div>
+            <div class="author">- {{ msg['author'] }}</div>
+            <div class="sender">From: {{ msg['sender'] }}</div>
+            {% if msg['extra_message'] %}
+            <div class="extra">Message: {{ msg['extra_message'] }}</div>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No messages yet.</p>
+    {% endfor %}
+    <form action="/" method="get">
+        <button type="submit">Back to Quotes</button>
+    </form>
+</body>
+</html>
+
+
+

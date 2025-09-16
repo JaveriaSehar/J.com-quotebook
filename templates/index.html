@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Quote</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #cce7ff; /* light blue */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .quote-card {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        .quote-text {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        .quote-author {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        .button-row button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background-color: #3399ff;
+            color: white;
+            cursor: pointer;
+        }
+        .button-row button:hover {
+            background-color: #007acc;
+        }
+        #share-btn {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        #share-btn:hover {
+            background-color: #218838;
+        }
+        .flash-message {
+            color: green;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .flash-error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="quote-card">
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- Quote -->
+        <div class="quote-text" id="quote-text">"{{ quote['text'] }}"</div>
+        <div class="quote-author" id="quote-author">- {{ quote['author'] }}</div>
+
+        <!-- Receiver & Message Inputs -->
+        <form action="/share" method="post" id="share-form">
+            <input type="hidden" name="quote_text" id="quote-hidden-text" value="{{ quote['text'] }}">
+            <input type="hidden" name="quote_author" id="quote-hidden-author" value="{{ quote['author'] }}">
+            <input type="text" name="receiver" placeholder="Receiver's username" required>
+            <input type="text" name="message" placeholder="Extra message (optional)">
+
+            <!-- Buttons Row -->
+            <div class="button-row">
+                <button type="button" id="next-quote-btn">Next Quote</button>
+                <button type="button" onclick="window.location.href='/inbox'">Inbox</button>
+                <button type="button" onclick="window.location.href='/logout'">Logout</button>
+            </div>
+
+            <!-- Share Quote Button -->
+            <button type="submit" id="share-btn">Share Quote</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("next-quote-btn").addEventListener("click", async () => {
+            try {
+                const response = await fetch("/next_quote");
+                const data = await response.json();
+
+                // Update the quote text and author
+                document.getElementById("quote-text").textContent = `"${data.text}"`;
+                document.getElementById("quote-author").textContent = `- ${data.author}`;
+
+                // Update the hidden inputs for sharing
+                document.getElementById("quote-hidden-text").value = data.text;
+                document.getElementById("quote-hidden-author").value = data.author;
+            } catch (error) {
+                alert("Failed to fetch a new quote. Please try again.");
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
