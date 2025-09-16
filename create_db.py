@@ -47,9 +47,13 @@ sample_quotes = [
     ("Happiness is not something ready-made. It comes from your own actions.", "Dalai Lama")
 ]
 
-cur.executemany("INSERT INTO quotes (text, author) VALUES (?, ?)", sample_quotes)
+# Insert sample quotes only if quotes table is empty
+cur.execute("SELECT COUNT(*) FROM quotes")
+if cur.fetchone()[0] == 0:
+    cur.executemany("INSERT INTO quotes (text, author) VALUES (?, ?)", sample_quotes)
 
 conn.commit()
 conn.close()
 
 print(f"Database '{DATABASE}' created successfully with tables: users, quotes, messages")
+
