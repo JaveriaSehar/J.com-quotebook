@@ -1,6 +1,6 @@
 # Motivator – Daily Quote Sharing Web App
 
-#### Video Demo: [https://youtu.be/qpHBnBQTrtQ]
+#### Video Demo: [https://youtu.be/li0Y9AUqrUA?si=iVYd-rpbBNJ0-L8A]
 
 #### Description:
 Motivator is a web-based application that spreads positivity through motivational quotes. Users can register, log in, view random quotes, share quotes with other users, and check their inbox for received messages. Built with Python (Flask) and SQLite, this app demonstrates web development skills and interactive features.
